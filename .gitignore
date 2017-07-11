@@ -10,6 +10,7 @@
 
 config/local.json
 dist
+pandas
 # Sensitive or high-churn files:
 .idea/**/dataSources/
 .idea/**/dataSources.ids
@@ -104,5 +105,3 @@ typings/
 
 # dotenv environment variables file
 .env
-
-data.csv
