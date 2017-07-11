@@ -8,12 +8,14 @@ router
   .route('/')
   .get((res, req, next) => {
     (async () => {
-      elasticsearch.search({
+      const cities = await elasticsearch.search({
         index: config.elasticsearch.index,
         type: 'city',
         size: 1000
       });
-      return res.json();
+      return res.json({
+        cities
+      });
     })().catch(next);
   });
 
