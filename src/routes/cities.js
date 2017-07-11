@@ -13,6 +13,7 @@ router
         type: 'city',
         size: 1000
       });
+
       return res.json({
         cities
       });

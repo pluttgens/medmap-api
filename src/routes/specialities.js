@@ -1,3 +1,16 @@
-/**
- * Created by pascalluttgens on 11/07/2017.
- */
+import { Router } from 'express';
+
+const router = Router();
+
+router
+  .route('/')
+  .get((req, res, next) => res.json({
+    data: [
+      'omnipraticien',
+      'infirmier',
+      'dentiste',
+      'pharmacien'
+    ]
+  }));
+
+export default router;
