@@ -1,7 +1,6 @@
 {
   "elasticsearch": {
     "index": "_medmap",
-    "host": "elasticsearch",
-    "port": "9200"
+    "host": "elasticsearch:9200"
   }
 }

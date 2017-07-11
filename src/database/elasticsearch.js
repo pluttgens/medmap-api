@@ -20,7 +20,8 @@ const elasticsearch = Elasticsearch.Client({
     };
     this.close = function () {
     };
-  }
+  },
+  connectionClass: require('http-aws-es')
 });
 
 export default elasticsearch;

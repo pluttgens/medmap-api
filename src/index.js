@@ -1,12 +1,18 @@
 import http from 'http';
 import config from 'config';
+import AWS from 'aws-sdk';
 import express from 'express';
 import helmet from 'helmet';
 import cors from 'cors';
 import morgan from 'morgan';
 import bodyParser from 'body-parser';
-import {serverLogger} from './loggers';
+import { serverLogger } from './loggers';
 import setupRoutes from './routes';
+
+AWS.config.update({
+  region: 'us-east-1',
+  credentials: new AWS.Credentials(config.aws.accessKey, config.aws.secret)
+});
 
 const app = express();
 
