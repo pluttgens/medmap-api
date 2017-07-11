@@ -6,7 +6,7 @@ services:
     build: .
     image: medmap/server:dev
     ports:
-      - 3888:80
+      - 3888:7100
     links:
       - medmapelasticsearch:elasticsearch
     volumes:

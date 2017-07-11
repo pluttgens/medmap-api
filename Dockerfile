@@ -13,6 +13,6 @@ COPY package.json .
 RUN npm i --save-dev
 COPY . .
 
-EXPOSE 80
+EXPOSE 7100
 
 CMD ["npm", "run", "dev"]
