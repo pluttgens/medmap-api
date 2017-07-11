@@ -1,0 +1,35 @@
+version: '2'
+
+services:
+  medmapserver:
+    restart: always
+    build: .
+    image: medmap/server:dev
+    ports:
+      - 3888:80
+    links:
+      - medmapelasticsearch:elasticsearch
+    volumes:
+      - .:/usr/src/medmap
+      - medmap-server-logs:/var/log/medmap
+    environment:
+      - NODE_ENV=development
+  medmapelasticsearch:
+    restart: always
+    image: elasticsearch:alpine
+    ports:
+      - "9241:9200"
+      - "9341:9300"
+    volumes:
+      - medmap-elasticsearch-data:/usr/share/elasticsearch/data
+    environment:
+      - http.host=0.0.0.0
+      - http.cors.enabled=true
+      - http.cors.allow-origin=*
+      - node.master=true
+      - transport.host=127.0.0.1
+volumes:
+  medmap-elasticsearch-data:
+    driver: local
+  medmap-server-logs:
+    driver: local
