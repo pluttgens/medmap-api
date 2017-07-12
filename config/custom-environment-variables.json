@@ -1,0 +1,10 @@
+{
+  "elasticsearch": {
+    "hosts": "ES_HOST"
+  },
+  "port": "PORT",
+  "aws": {
+    "accessKey": "ACCESS_KEY",
+    "secret": "SECRET"
+  }
+}
