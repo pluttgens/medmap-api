@@ -1,6 +1,10 @@
 {
   "elasticsearch": {
-    "index": "_medmap",
-    "host": "elasticsearch:9200"
-  }
+    "index": "medmap"
+  },
+  "dynamodb": {
+    "tableName": "medmap_cities"
+  },
+  "datacenterId": 0,
+  "workerId": 0
 }

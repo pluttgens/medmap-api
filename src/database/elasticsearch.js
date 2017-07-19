@@ -21,7 +21,34 @@ const elasticsearch = Elasticsearch.Client({
     this.close = function () {
     };
   },
+  version: '5.x',
   connectionClass: require('http-aws-es')
 });
+
+
+(async () => {
+  try {
+    await elasticsearch.indices.create({
+      index: config.elasticsearch.index
+    })
+  } catch (e) {
+
+  }
+
+  elasticsearch.indices.putMapping({
+    index: config.elasticsearch.index,
+    type: 'record',
+    body: {
+      properties: {
+        geo_point: {
+          type: 'geo_point'
+        },
+        geo_shape: {
+          type: 'geo_shape'
+        }
+      }
+    }
+  });
+})().catch(console.log.bind(console));
 
 export default elasticsearch;

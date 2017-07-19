@@ -13,7 +13,7 @@ services:
       - .:/usr/src/medmap
       - medmap-server-logs:/var/log/medmap
     environment:
-      - NODE_ENV=development
+      - NODE_ENV=docker
   medmapelasticsearch:
     restart: always
     image: elasticsearch:alpine
