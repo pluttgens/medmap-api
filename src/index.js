@@ -22,4 +22,4 @@ setupRoutes(app);
 const server = http.createServer(app);
 server.on('listening', () => serverLogger.info(`Server listening on port ${config.port}`));
 
-server.listen(config.port);
+server.listen(3000 || config.port);
