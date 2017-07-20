@@ -25,9 +25,11 @@ router
                 fields: ['nom_com'],
                 query: query
               }
-            }
+            },
+            size: 1000
           }
         });
+        console.log('TOTAL', esResults.hits.total);
       } else {
         esResults = await elasticsearch.search({
           index: config.elasticsearch.index,
@@ -37,7 +39,7 @@ router
 
       return res.json({
         data: await mongo.models.City.find({
-          _id: {
+          n_id: {
             $in: esResults.hits.hits.map(record => record._id)
           }
         })
@@ -100,7 +102,7 @@ router
 
                 prev.push({
                   insee_code: curr.codgeo,
-                  nom_com: curr.nom_com,
+                  nom_com: curr.nom_com || curr.libgeo,
                   nom_dept: curr.nom_dept,
                   nom_reg: curr.nom_reg,
                   geo_point: curr.geo_point,

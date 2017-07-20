@@ -1,6 +1,6 @@
-import config from 'config';
+import Promise from 'bluebird';
 import { Router } from 'express';
-import { mongo, elasticsearch } from '../database';
+import { mongo } from '../database';
 
 const router = Router();
 router
@@ -8,9 +8,18 @@ router
   .get((req, res, next) => {
     (async () => {
       return res.json({
-        data: await mongo.models.City.distinct('nom_reg')
+        data: await Promise
+          .props({
+            names: mongo.models.City.distinct('nom_reg'),
+            codes: mongo.models.City.distinct('reg')
+          })
+          .then(results => results.names.map((name, i) => ({
+            name: name,
+            code: results.codes[i]
+          })))
       });
-    })().catch(next);
-  });
+  })().catch(next);
+})
+;
 
 export default router;
