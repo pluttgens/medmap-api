@@ -65,7 +65,7 @@ router
       }
 
       return res.json({
-        data: await  mongo.models.City.find(params).sort({ densité_médicale_bv: medicalDensity === 'Basse' ? 1 : -1 }).limit(limit || 10).exec()
+        data: await  mongo.models.City.find(params).sort({ densité_médicale_bv: medicalDensity === 'Faible' ? 1 : -1 }).limit(limit || 10).exec()
       });
 
 
