@@ -13,6 +13,13 @@ router
   .get((req, res, next) => {
     (async () => {
       const query = req.query.q;
+      const speciality = req.query.speciality;
+      const department = req.query.department;
+      const economicOrientation = req.query.economic_orientation;
+      const hasPharmacy = req.query.has_pharmacy;
+      const medicalDensity = req.query.medical_density;
+      const demographicEvolution = req.query.demographic_evolution;
+
       let esResults;
       if (query) {
         esResults = await elasticsearch.search({
@@ -29,20 +36,32 @@ router
             size: 1000
           }
         });
-      } else {
-        esResults = await elasticsearch.search({
-          index: config.elasticsearch.index,
-          type: 'record',
+
+        return res.json({
+          data: await mongo.models.City.find({
+            n_id: {
+              $in: esResults.hits.hits.map(record => record._id)
+            }
+          })
         });
       }
 
+      const params = {};
+      //if (speciality);
+      if (department) params.dep = Number(department);
+      if (economicOrientation) params.orientation_economique = economicOrientation
+      if (hasPharmacy) params.nb_pharmacies_et_parfumerie = {
+        $exists: hasPharmacy
+      }
+      if (demographicEvolution) params.evolution_population = {
+        $regex: demographicEvolution === 'Augmentation' ? /[0-9].*/ : /-.*/
+      }
+
       return res.json({
-        data: await mongo.models.City.find({
-          n_id: {
-            $in: esResults.hits.hits.map(record => record._id)
-          }
-        })
+        data: await  mongo.models.City.find(params).sort({ densité_médical_bv: medicalDensity === 'Basse' ? -1 : 1 }).exec()
       });
+
+
     })().catch(next);
   })
   .post((req, res, next) => {
@@ -66,7 +85,7 @@ router
           const formattedRecord = {};
           Object.keys(record).forEach(key => {
             if (record[key])
-              formattedRecord[key.replace(/\s/g, '_').toLowerCase()] = String(record[key]);
+              formattedRecord[key.replace(/\s/g, '_').toLowerCase()] = record[key];
           });
           return formattedRecord;
         });

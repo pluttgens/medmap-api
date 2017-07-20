@@ -6,7 +6,12 @@ import { mongoLogger } from '../loggers';
 mongoose.Promise = Promise;
 
 mongoose.model('City', new mongoose.Schema({
-  n_id: { type: String, unique: true, index: true, required: true }
+  n_id: { type: String, unique: true, index: true, required: true },
+  // "densité_médicale_bv": {type: Number},
+  // "nb_omnipraticiens_bv" : {type: Number},
+  // "nb_infirmiers_libéraux_bv" :{type: Number},
+  // "nb_dentistes_libéraux_bv" : {type: Number},
+  // "nb_pharmaciens_libéraux_bv" : {type: Number},
 }, { strict: false }));
 
 process.on('SIGINT', () => {

@@ -1,7 +1,6 @@
-import config from 'config';
 import Promise from 'bluebird';
 import { Router } from 'express';
-import { mongo, elasticsearch } from '../database';
+import { mongo } from '../database';
 
 const router = Router();
 router
@@ -12,7 +11,7 @@ router
         data: await Promise
           .props({
             names: mongo.models.City.distinct('nom_dept'),
-            codes: mongo.models.City.distinct('code_dept')
+            codes: mongo.models.City.distinct('dep')
           })
           .then(results => results.names.map((name, i) => ({
             name: name,
@@ -23,29 +22,20 @@ router
   });
 
 router
-  .route('/:code/cities')
+  .route('/densities')
   .get((req, res, next) => {
     (async () => {
-      const codeDept = req.params.code;
-      mongo.models.City.find({
-        'code_dept': codeDept
-      })
-
       return res.json({
-        data: await Promise
-          .props({
-            names: mongo.models.City.distinct('nom_dept'),
-            codes: mongo.models.City.distinct('code_dept')
+        data: await mongo.models.City.aggregate()
+          .group({
+            _id: '$dep',
+            'medical_density': {
+              $avg: '$densité_médicale_bv'
+            }
           })
-          .then(results => results.names.map((name, i) => ({
-            name: name,
-            code: results.codes[i]
-          })))
+          .exec()
       });
     })().catch(next);
   });
-
-router
-  .route('/:code')
 
 export default router;
