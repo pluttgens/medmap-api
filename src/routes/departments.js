@@ -1,4 +1,5 @@
 import Promise from 'bluebird';
+import padLeft from 'pad-left';
 import { Router } from 'express';
 import { mongo } from '../database';
 
@@ -26,14 +27,19 @@ router
   .get((req, res, next) => {
     (async () => {
       return res.json({
-        data: await mongo.models.City.aggregate()
+        data: (await mongo.models.City.aggregate()
           .group({
             _id: '$dep',
             'medical_density': {
               $avg: '$densité_médicale_bv'
             }
           })
-          .exec()
+          .exec())
+          .map(dep => {
+            dep.code = padLeft(dep._id, 2, 0);
+            delete dep._id;
+            return dep;
+          })
       });
     })().catch(next);
   });

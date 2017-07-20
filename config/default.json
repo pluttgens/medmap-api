@@ -6,5 +6,8 @@
     "tableName": "medmap_cities"
   },
   "datacenterId": 0,
-  "workerId": 0
+  "workerId": 0,
+  "redis": {
+    "host": "127.0.0.1"
+  }
 }

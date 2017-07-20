@@ -6,7 +6,7 @@ import helmet from 'helmet';
 import cors from 'cors';
 import morgan from 'morgan';
 import bodyParser from 'body-parser';
-import { serverLogger } from './loggers';
+import { accessLogger, serverLogger } from './loggers';
 import setupRoutes from './routes';
 
 awsConfig;
@@ -14,7 +14,7 @@ const app = express();
 
 app.use(cors());
 app.use(helmet());
-app.use(morgan('dev'));
+app.use(morgan('combined', { stream: { write: message => accessLogger.info(message) } }));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 setupRoutes(app);

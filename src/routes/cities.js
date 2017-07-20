@@ -3,7 +3,7 @@ import { Router } from 'express';
 import _ from 'lodash';
 import Promise from 'bluebird';
 import Busboy from 'busboy';
-import { elasticsearch, mongo } from '../database';
+import { elasticsearch, mongo, redis } from '../database';
 import { snowflake } from '../helpers';
 import { dynamodbLogger, mongoLogger, serverLogger } from '../loggers';
 
@@ -65,7 +65,6 @@ router
     })().catch(next);
   })
   .post((req, res, next) => {
-
     const busboy = new Busboy({ headers: req.headers });
     let records = '';
     busboy.on('file', function (fieldname, file, filename, encoding, mimetype) {
@@ -75,6 +74,8 @@ router
         records += data;
       });
       file.on('end', async function () {
+        const jobId = await snowflake.getId();
+        redis.set(jobId, true);
         records = JSON.parse(records);
 
         for (let record of records) {
@@ -140,6 +141,7 @@ router
         // await indexToDynamo;
         await indexToElastic;
         serverLogger.info('Done indexing city records.');
+        redis.del(jobId)
       });
     });
     req.pipe(busboy);

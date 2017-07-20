@@ -10,5 +10,8 @@
   "mongodb": {
     "user": "MONGO_USER",
     "password": "MONGO_PASSWORD"
+  },
+  "redis": {
+    "host": "REDIS_HOST"
   }
 }

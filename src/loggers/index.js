@@ -47,3 +47,27 @@ export const mongoLogger = new winston.Logger({
     })
   ]
 });
+
+export const redisLogger = new winston.Logger({
+  transports: [
+    new (winston.transports.Console)({
+      level: 'silly',
+      colorize: true,
+      prettyPrint: true,
+      timestamp: true,
+      label: 'redis'
+    })
+  ]
+});
+
+export const accessLogger = new winston.Logger({
+  transports: [
+    new (winston.transports.Console)({
+      level: 'silly',
+      colorize: true,
+      prettyPrint: true,
+      timestamp: true,
+      label: 'access'
+    })
+  ]
+});
