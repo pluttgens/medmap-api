@@ -19,6 +19,7 @@ router
       const hasPharmacy = req.query.has_pharmacy;
       const medicalDensity = req.query.medical_density;
       const demographicEvolution = req.query.demographic_evolution;
+      const limit = req.query.limit;
 
       let esResults;
       if (query) {
@@ -58,7 +59,7 @@ router
       }
 
       return res.json({
-        data: await  mongo.models.City.find(params).sort({ densité_médical_bv: medicalDensity === 'Basse' ? -1 : 1 }).exec()
+        data: await  mongo.models.City.find(params).sort({ densité_médical_bv: medicalDensity === 'Basse' ? -1 : 1 }).limit(limit || 10).exec()
       });
 
 
