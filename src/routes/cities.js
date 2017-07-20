@@ -54,12 +54,18 @@ router
       if (hasPharmacy) params.nb_pharmacies_et_parfumerie = {
         $exists: hasPharmacy
       }
-      if (demographicEvolution) params.evolution_population = {
-        $regex: demographicEvolution === 'Augmentation' ? /[0-9].*/ : /-.*/
+      if (demographicEvolution === 'Augmentation') {
+        params.evolution_population = {
+          $gte: 0
+        };
+      } else if (demographicEvolution === 'Diminution') {
+        params.evolution_population = {
+          $lt: 0
+        };
       }
 
       return res.json({
-        data: await  mongo.models.City.find(params).sort({ densité_médical_bv: medicalDensity === 'Basse' ? -1 : 1 }).limit(limit || 10).exec()
+        data: await  mongo.models.City.find(params).sort({ densité_médicale_bv: medicalDensity === 'Basse' ? 1 : -1 }).limit(limit || 10).exec()
       });
 
 
