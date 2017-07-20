@@ -9,5 +9,8 @@
   "workerId": 0,
   "redis": {
     "host": "127.0.0.1"
+  },
+  "kinesis": {
+    "streamName": "access"
   }
 }

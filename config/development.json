@@ -1,5 +1,5 @@
 {
-  "port": 7100,
+  "port": 7101,
   "elasticsearch": {
     "host": "search-medmap-3vqh3chogyl3kizbgehsq5af24.us-east-1.es.amazonaws.com:80"
   }

@@ -7,6 +7,7 @@ import cors from 'cors';
 import morgan from 'morgan';
 import bodyParser from 'body-parser';
 import { accessLogger, serverLogger } from './loggers';
+import {kinesis} from './database';
 import setupRoutes from './routes';
 
 awsConfig;
@@ -14,7 +15,14 @@ const app = express();
 
 app.use(cors());
 app.use(helmet());
-app.use(morgan('combined', { stream: { write: message => accessLogger.info(message) } }));
+app.use(morgan('combined', { stream: { write: message => {
+  kinesis.putRecordAsync({
+    Data: message.toString(),
+    PartitionKey: '1',
+    StreamName: config.kinesis.streamName
+  })
+  accessLogger.info(message)
+} } }));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 setupRoutes(app);
