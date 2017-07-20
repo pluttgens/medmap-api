@@ -29,7 +29,6 @@ router
             size: 1000
           }
         });
-        console.log('TOTAL', esResults.hits.total);
       } else {
         esResults = await elasticsearch.search({
           index: config.elasticsearch.index,

@@ -1,6 +1,6 @@
 {
   "elasticsearch": {
-    "hosts": "ES_HOST"
+    "host": "ES_HOST"
   },
   "port": "PORT",
   "aws": {
